@@ -9,7 +9,9 @@ type Model struct {
 }
 
 func New(tgClient MessageSender) *Model {
-	return &Model{}
+	return &Model{
+		tgClient: tgClient,
+	}
 }
 
 type Message struct {
@@ -18,5 +20,10 @@ type Message struct {
 }
 
 func (s *Model) IncomingMessage(msg Message) error {
+	if msg.Text == "/start" {
+		s.tgClient.SendMessage("hello", msg.UserID)
+		return nil
+	}
+	s.tgClient.SendMessage("unknown command", msg.UserID)
 	return nil
 }
