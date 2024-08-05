@@ -2,12 +2,11 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 )
-
-const configFile = "data/config.yaml"
 
 type Config struct {
 	Token string `yaml:"token"`
@@ -19,6 +18,7 @@ type Service struct {
 
 func New() (*Service, error) {
 	s := &Service{}
+	configFile, _ := filepath.Abs("..\\..\\data\\config.yaml")
 
 	rawYAML, err := os.ReadFile(configFile)
 	if err != nil {
