@@ -1,4 +1,4 @@
-package repository
+package service
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	model "github.com/nqrm/go_bot/internal/model/expenses"
 )
 
-type ExpenseRepository interface {
-	Create(ctx context.Context, uuid string, info *model.ExpenseInfo) error
+type ExpenseService interface {
+	Create(ctx context.Context, info *model.ExpenseInfo) (string, error)
 	Get(ctx context.Context, uuid string) (*model.Expense, error)
 }

@@ -9,24 +9,24 @@ import (
 	repoModel "github.com/nqrm/go_bot/internal/repository/expenses/model"
 )
 
-var _ def.ExpensesRepository = (*repository)(nil)
+var _ def.ExpenseRepository = (*repository)(nil)
 
 type repository struct {
-	data map[string]*repoModel.Expenses
+	data map[string]*repoModel.Expense
 	m    sync.RWMutex
 }
 
 func NewRepository() *repository {
 	return &repository{
-		data: make(map[string]*repoModel.Expenses),
+		data: make(map[string]*repoModel.Expense),
 	}
 }
 
-func (r *repository) Create(_ context.Context, uuid string, info *model.ExpensesInfo) error {
+func (r *repository) Create(_ context.Context, uuid string, info *model.ExpenseInfo) error {
 	r.m.Lock()
 	defer r.m.Unlock()
 
-	r.data[uuid] = &repoModel.Expenses{
+	r.data[uuid] = &repoModel.Expense{
 		UUID:      uuid,
 		CreatedAt: info.CreatedAt,
 		Category:  info.Category,
@@ -36,7 +36,7 @@ func (r *repository) Create(_ context.Context, uuid string, info *model.Expenses
 	return nil
 }
 
-func (r *repository) Get(_ context.Context, uuid string) (*model.ExpensesInfo, error) {
+func (r *repository) Get(_ context.Context, uuid string) (*model.Expense, error) {
 	r.m.RLock()
 	defer r.m.RUnlock()
 
@@ -45,9 +45,5 @@ func (r *repository) Get(_ context.Context, uuid string) (*model.ExpensesInfo, e
 		return nil, nil
 	}
 
-	return &model.ExpensesInfo{
-		CreatedAt: expenses.CreatedAt,
-		Category:  expenses.Category,
-		Amount:    expenses.Amount,
-	}, nil
+	return (*model.Expense)(expenses), nil
 }

@@ -2,14 +2,14 @@ package model
 
 import "time"
 
-type Expenses struct {
+type Expense struct {
 	UUID      string
 	CreatedAt time.Time
 	Category  string
 	Amount    int
 }
 
-type ExpensesInfo struct {
+type ExpenseInfo struct {
 	CreatedAt time.Time
 	Category  string
 	Amount    int
